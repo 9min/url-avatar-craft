@@ -1,0 +1,45 @@
+{
+	"name": "holoid",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"lint": "biome check --write .",
+		"test": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"db:start": "npx supabase start",
+		"db:stop": "npx supabase stop",
+		"db:reset": "npx supabase db reset",
+		"db:types": "npx supabase gen types typescript --local > src/types/database.ts"
+	},
+	"dependencies": {
+		"@react-three/drei": "^10.7.7",
+		"@react-three/fiber": "^9.5.0",
+		"@supabase/supabase-js": "^2.98.0",
+		"clsx": "^2.1.1",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
+		"tailwind-merge": "^3.5.0",
+		"three": "^0.183.2",
+		"zustand": "^5.0.11"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.6",
+		"@tailwindcss/vite": "^4.2.1",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"@types/three": "^0.183.1",
+		"@vitejs/plugin-react": "^5.1.4",
+		"@vitest/coverage-v8": "^4.0.18",
+		"jsdom": "^28.1.0",
+		"lefthook": "^2.1.3",
+		"supabase": "^2.77.0",
+		"tailwindcss": "^4.2.1",
+		"typescript": "^5.9.3",
+		"vite": "^7.3.1",
+		"vitest": "^4.0.18"
+	}
+}

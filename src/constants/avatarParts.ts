@@ -1,0 +1,284 @@
+import type { AvatarPartCategory, AvatarState } from "../types/avatar";
+
+/** URL 직렬화 시 사용할 고정 순서 키 배열 */
+const AVATAR_KEYS: readonly AvatarPartCategory[] = [
+	"skinTone",
+	"faceShape",
+	"eyes",
+	"eyebrows",
+	"nose",
+	"mouth",
+	"hairStyle",
+	"hairColor",
+	"glasses",
+	"earrings",
+	"hat",
+	"mask",
+	"top",
+	"auraEffect",
+] as const;
+
+interface AvatarPartOption {
+	id: number;
+	label: string;
+}
+
+interface AvatarCategoryMeta {
+	key: AvatarPartCategory;
+	label: string;
+	group: string;
+	options: AvatarPartOption[];
+}
+
+/** 모든 파츠의 기본값 (0) */
+const DEFAULT_AVATAR: AvatarState = {
+	skinTone: 0,
+	faceShape: 0,
+	eyes: 0,
+	eyebrows: 0,
+	nose: 0,
+	mouth: 0,
+	hairStyle: 0,
+	hairColor: 0,
+	glasses: 0,
+	earrings: 0,
+	hat: 0,
+	mask: 0,
+	top: 0,
+	auraEffect: 0,
+};
+
+/** 카테고리별 메타데이터 및 옵션 목록 */
+const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
+	{
+		key: "skinTone",
+		label: "피부톤",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "밝은살구" },
+			{ id: 1, label: "살구" },
+			{ id: 2, label: "밀색" },
+			{ id: 3, label: "황금빛" },
+			{ id: 4, label: "올리브" },
+			{ id: 5, label: "갈색" },
+			{ id: 6, label: "진갈색" },
+			{ id: 7, label: "다크" },
+		],
+	},
+	{
+		key: "faceShape",
+		label: "얼굴형",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "둥근형" },
+			{ id: 1, label: "각진형" },
+			{ id: 2, label: "계란형" },
+			{ id: 3, label: "하트형" },
+			{ id: 4, label: "긴형" },
+			{ id: 5, label: "다이아몬드형" },
+		],
+	},
+	{
+		key: "eyes",
+		label: "눈",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "기본" },
+			{ id: 1, label: "고양이눈" },
+			{ id: 2, label: "하트눈" },
+			{ id: 3, label: "별눈" },
+			{ id: 4, label: "졸린눈" },
+			{ id: 5, label: "큰눈" },
+			{ id: 6, label: "째려보기" },
+			{ id: 7, label: "윙크" },
+			{ id: 8, label: "반달눈" },
+			{ id: 9, label: "X눈" },
+			{ id: 10, label: "동그란눈" },
+			{ id: 11, label: "사이보그" },
+		],
+	},
+	{
+		key: "eyebrows",
+		label: "눈썹",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "일자" },
+			{ id: 1, label: "아치형" },
+			{ id: 2, label: "굵은" },
+			{ id: 3, label: "얇은" },
+			{ id: 4, label: "각진" },
+			{ id: 5, label: "찡그린" },
+			{ id: 6, label: "올라간" },
+			{ id: 7, label: "없음" },
+		],
+	},
+	{
+		key: "nose",
+		label: "코",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "기본" },
+			{ id: 1, label: "작은코" },
+			{ id: 2, label: "높은코" },
+			{ id: 3, label: "둥근코" },
+			{ id: 4, label: "뾰족코" },
+			{ id: 5, label: "납작코" },
+		],
+	},
+	{
+		key: "mouth",
+		label: "입",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "미소" },
+			{ id: 1, label: "무표정" },
+			{ id: 2, label: "활짝웃음" },
+			{ id: 3, label: "삐죽" },
+			{ id: 4, label: "O형" },
+			{ id: 5, label: "혀내밀기" },
+			{ id: 6, label: "이빨" },
+			{ id: 7, label: "송곳니" },
+			{ id: 8, label: "입술물기" },
+			{ id: 9, label: "마스크" },
+		],
+	},
+	{
+		key: "hairStyle",
+		label: "헤어스타일",
+		group: "헤어",
+		options: [
+			{ id: 0, label: "숏컷" },
+			{ id: 1, label: "포니테일" },
+			{ id: 2, label: "웨이브" },
+			{ id: 3, label: "투블럭" },
+			{ id: 4, label: "댄디컷" },
+			{ id: 5, label: "보브컷" },
+			{ id: 6, label: "트윈테일" },
+			{ id: 7, label: "리젠트" },
+			{ id: 8, label: "스파이크" },
+			{ id: 9, label: "모히칸" },
+			{ id: 10, label: "장발" },
+			{ id: 11, label: "드레드" },
+			{ id: 12, label: "아프로" },
+			{ id: 13, label: "삭발" },
+			{ id: 14, label: "올백" },
+			{ id: 15, label: "앞머리" },
+			{ id: 16, label: "가르마" },
+			{ id: 17, label: "만두머리" },
+			{ id: 18, label: "레이어드" },
+			{ id: 19, label: "울프컷" },
+		],
+	},
+	{
+		key: "hairColor",
+		label: "헤어컬러",
+		group: "헤어",
+		options: [
+			{ id: 0, label: "검정" },
+			{ id: 1, label: "갈색" },
+			{ id: 2, label: "금발" },
+			{ id: 3, label: "빨강" },
+			{ id: 4, label: "핑크" },
+			{ id: 5, label: "파랑" },
+			{ id: 6, label: "보라" },
+			{ id: 7, label: "초록" },
+			{ id: 8, label: "은색" },
+			{ id: 9, label: "하양" },
+			{ id: 10, label: "주황" },
+			{ id: 11, label: "그라데이션" },
+		],
+	},
+	{
+		key: "glasses",
+		label: "안경",
+		group: "악세사리",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "둥근안경" },
+			{ id: 2, label: "뿔테안경" },
+			{ id: 3, label: "선글라스" },
+			{ id: 4, label: "반테안경" },
+			{ id: 5, label: "모노클" },
+			{ id: 6, label: "스포츠고글" },
+			{ id: 7, label: "VR헤드셋" },
+		],
+	},
+	{
+		key: "earrings",
+		label: "귀걸이",
+		group: "악세사리",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "스터드" },
+			{ id: 2, label: "링형" },
+			{ id: 3, label: "드롭형" },
+			{ id: 4, label: "크로스" },
+			{ id: 5, label: "별모양" },
+		],
+	},
+	{
+		key: "hat",
+		label: "모자",
+		group: "악세사리",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "비니" },
+			{ id: 2, label: "왕관" },
+			{ id: 3, label: "야구모자" },
+			{ id: 4, label: "마녀모자" },
+			{ id: 5, label: "헤일로" },
+			{ id: 6, label: "고깔모자" },
+			{ id: 7, label: "헬멧" },
+		],
+	},
+	{
+		key: "mask",
+		label: "마스크",
+		group: "악세사리",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "가면" },
+			{ id: 2, label: "반다나" },
+			{ id: 3, label: "여우가면" },
+			{ id: 4, label: "방독면" },
+			{ id: 5, label: "복면" },
+		],
+	},
+	{
+		key: "top",
+		label: "상의",
+		group: "의상",
+		options: [
+			{ id: 0, label: "티셔츠" },
+			{ id: 1, label: "후드" },
+			{ id: 2, label: "정장" },
+			{ id: 3, label: "갑옷" },
+			{ id: 4, label: "망토" },
+			{ id: 5, label: "교복" },
+			{ id: 6, label: "가죽자켓" },
+			{ id: 7, label: "한복" },
+			{ id: 8, label: "운동복" },
+			{ id: 9, label: "셔츠" },
+			{ id: 10, label: "조끼" },
+			{ id: 11, label: "로브" },
+		],
+	},
+	{
+		key: "auraEffect",
+		label: "배경 이펙트",
+		group: "이펙트",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "불꽃" },
+			{ id: 2, label: "벚꽃" },
+			{ id: 3, label: "매트릭스" },
+			{ id: 4, label: "번개" },
+			{ id: 5, label: "눈" },
+			{ id: 6, label: "하트" },
+			{ id: 7, label: "별" },
+		],
+	},
+] as const;
+
+export { AVATAR_KEYS, AVATAR_CATEGORIES, DEFAULT_AVATAR };
+export type { AvatarPartOption, AvatarCategoryMeta };
