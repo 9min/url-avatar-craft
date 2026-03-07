@@ -1,7 +1,8 @@
+import { MainLayout } from "../components/layout/MainLayout";
+import { useHashSync } from "../hooks/useHashSync";
+
 export function App() {
-	return (
-		<div className="flex min-h-screen items-center justify-center bg-gray-950 text-white">
-			<h1 className="text-4xl font-bold">HoloID</h1>
-		</div>
-	);
+	useHashSync();
+
+	return <MainLayout />;
 }

@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { DEFAULT_AVATAR } from "../constants/avatarParts";
 import type { AvatarPartCategory, AvatarState } from "../types/avatar";
-
-type CardMaterial = "foil" | "neon" | "glass" | "metal";
+import type { CardMaterial } from "../types/card";
 
 interface CardState {
 	material: CardMaterial;
@@ -22,6 +21,9 @@ interface CardState {
 	setAvatarPart: (category: AvatarPartCategory, partId: number) => void;
 	resetAvatar: () => void;
 	setAvatar: (avatar: AvatarState) => void;
+	loadState: (
+		state: Partial<Pick<CardState, "material" | "nickname" | "title" | "avatar">>,
+	) => void;
 }
 
 export const useCardStore = create<CardState>()((set) => ({
@@ -45,4 +47,5 @@ export const useCardStore = create<CardState>()((set) => ({
 		})),
 	resetAvatar: () => set({ avatar: { ...DEFAULT_AVATAR } }),
 	setAvatar: (avatar) => set({ avatar }),
+	loadState: (partial) => set(partial),
 }));
