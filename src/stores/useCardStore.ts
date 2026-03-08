@@ -7,20 +7,25 @@ interface CardState {
 	material: CardMaterial;
 	nickname: string;
 	title: string;
-	stats: Record<string, number>;
-	badges: string[];
 	particleEffect: string | null;
 	avatar: AvatarState;
+	isFlipped: boolean;
+	captureRequested: boolean;
+	autoRandom: boolean;
+	autoRotate: boolean;
 	setMaterial: (material: CardMaterial) => void;
 	setNickname: (nickname: string) => void;
 	setTitle: (title: string) => void;
-	setStat: (key: string, value: number) => void;
-	addBadge: (badge: string) => void;
-	removeBadge: (badge: string) => void;
 	setParticleEffect: (effect: string | null) => void;
 	setAvatarPart: (category: AvatarPartCategory, partId: number) => void;
 	resetAvatar: () => void;
 	setAvatar: (avatar: AvatarState) => void;
+	stopAutoRandom: () => void;
+	startAutoRandom: () => void;
+	setAutoRotate: (value: boolean) => void;
+	toggleFlip: () => void;
+	requestCapture: () => void;
+	clearCaptureRequest: () => void;
 	loadState: (
 		state: Partial<Pick<CardState, "material" | "nickname" | "title" | "avatar">>,
 	) => void;
@@ -30,16 +35,16 @@ export const useCardStore = create<CardState>()((set) => ({
 	material: "foil",
 	nickname: "",
 	title: "",
-	stats: {},
-	badges: [],
 	particleEffect: null,
 	avatar: { ...DEFAULT_AVATAR },
+	isFlipped: false,
+	captureRequested: false,
+	// URL 해시나 쿼리 파라미터가 없을 때만 자동 랜덤 활성화
+	autoRandom: !window.location.hash && !window.location.search,
+	autoRotate: true,
 	setMaterial: (material) => set({ material }),
 	setNickname: (nickname) => set({ nickname }),
 	setTitle: (title) => set({ title }),
-	setStat: (key, value) => set((state) => ({ stats: { ...state.stats, [key]: value } })),
-	addBadge: (badge) => set((state) => ({ badges: [...state.badges, badge] })),
-	removeBadge: (badge) => set((state) => ({ badges: state.badges.filter((b) => b !== badge) })),
 	setParticleEffect: (effect) => set({ particleEffect: effect }),
 	setAvatarPart: (category, partId) =>
 		set((state) => ({
@@ -47,5 +52,11 @@ export const useCardStore = create<CardState>()((set) => ({
 		})),
 	resetAvatar: () => set({ avatar: { ...DEFAULT_AVATAR } }),
 	setAvatar: (avatar) => set({ avatar }),
+	stopAutoRandom: () => set({ autoRandom: false }),
+	startAutoRandom: () => set({ autoRandom: true }),
+	setAutoRotate: (value) => set({ autoRotate: value }),
+	toggleFlip: () => set((state) => ({ isFlipped: !state.isFlipped })),
+	requestCapture: () => set({ captureRequested: true }),
+	clearCaptureRequest: () => set({ captureRequested: false }),
 	loadState: (partial) => set(partial),
 }));

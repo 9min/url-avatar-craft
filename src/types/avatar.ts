@@ -1,10 +1,9 @@
 /** 아바타 파츠 식별자 (0부터 시작하는 인덱스) */
 type AvatarPartId = number;
 
-/** 아바타 전체 상태 — 14개 카테고리 */
+/** 아바타 전체 상태 — 16개 카테고리 */
 interface AvatarState {
 	skinTone: AvatarPartId;
-	faceShape: AvatarPartId;
 	eyes: AvatarPartId;
 	eyebrows: AvatarPartId;
 	nose: AvatarPartId;
@@ -17,6 +16,9 @@ interface AvatarState {
 	mask: AvatarPartId;
 	top: AvatarPartId;
 	auraEffect: AvatarPartId;
+	heldItem: AvatarPartId;
+	blush: AvatarPartId;
+	pet: AvatarPartId;
 }
 
 /** 아바타 파츠 카테고리 키 */
