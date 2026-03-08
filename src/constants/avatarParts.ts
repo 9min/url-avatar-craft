@@ -1,9 +1,8 @@
 import type { AvatarPartCategory, AvatarState } from "../types/avatar";
 
-/** URL 직렬화 시 사용할 고정 순서 키 배열 */
+/** URL 직렬화 시 사용할 고정 순서 키 배열 (16개) */
 const AVATAR_KEYS: readonly AvatarPartCategory[] = [
 	"skinTone",
-	"faceShape",
 	"eyes",
 	"eyebrows",
 	"nose",
@@ -16,6 +15,9 @@ const AVATAR_KEYS: readonly AvatarPartCategory[] = [
 	"mask",
 	"top",
 	"auraEffect",
+	"heldItem",
+	"blush",
+	"pet",
 ] as const;
 
 interface AvatarPartOption {
@@ -33,7 +35,6 @@ interface AvatarCategoryMeta {
 /** 모든 파츠의 기본값 (0) */
 const DEFAULT_AVATAR: AvatarState = {
 	skinTone: 0,
-	faceShape: 0,
 	eyes: 0,
 	eyebrows: 0,
 	nose: 0,
@@ -46,6 +47,9 @@ const DEFAULT_AVATAR: AvatarState = {
 	mask: 0,
 	top: 0,
 	auraEffect: 0,
+	heldItem: 0,
+	blush: 0,
+	pet: 0,
 };
 
 /** 카테고리별 메타데이터 및 옵션 목록 */
@@ -66,19 +70,6 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 		],
 	},
 	{
-		key: "faceShape",
-		label: "얼굴형",
-		group: "얼굴 기본",
-		options: [
-			{ id: 0, label: "둥근형" },
-			{ id: 1, label: "각진형" },
-			{ id: 2, label: "계란형" },
-			{ id: 3, label: "하트형" },
-			{ id: 4, label: "긴형" },
-			{ id: 5, label: "다이아몬드형" },
-		],
-	},
-	{
 		key: "eyes",
 		label: "눈",
 		group: "얼굴 기본",
@@ -95,6 +86,10 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 9, label: "X눈" },
 			{ id: 10, label: "동그란눈" },
 			{ id: 11, label: "사이보그" },
+			{ id: 12, label: "눈물눈" },
+			{ id: 13, label: "피로눈" },
+			{ id: 14, label: "하트+별" },
+			{ id: 15, label: "반짝눈" },
 		],
 	},
 	{
@@ -110,6 +105,10 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 5, label: "찡그린" },
 			{ id: 6, label: "올라간" },
 			{ id: 7, label: "없음" },
+			{ id: 8, label: "아기형" },
+			{ id: 9, label: "하트모양" },
+			{ id: 10, label: "물결" },
+			{ id: 11, label: "끊어진" },
 		],
 	},
 	{
@@ -123,6 +122,8 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 3, label: "둥근코" },
 			{ id: 4, label: "뾰족코" },
 			{ id: 5, label: "납작코" },
+			{ id: 6, label: "돼지코" },
+			{ id: 7, label: "없음" },
 		],
 	},
 	{
@@ -140,6 +141,10 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 7, label: "송곳니" },
 			{ id: 8, label: "입술물기" },
 			{ id: 9, label: "마스크" },
+			{ id: 10, label: "씩웃음" },
+			{ id: 11, label: "공포입" },
+			{ id: 12, label: "지퍼입" },
+			{ id: 13, label: "고양이입" },
 		],
 	},
 	{
@@ -167,6 +172,12 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 17, label: "만두머리" },
 			{ id: 18, label: "레이어드" },
 			{ id: 19, label: "울프컷" },
+			{ id: 20, label: "버섯컷" },
+			{ id: 21, label: "사이드업" },
+			{ id: 22, label: "헝클어진" },
+			{ id: 23, label: "롱포니" },
+			{ id: 24, label: "크라운" },
+			{ id: 25, label: "피쉬테일" },
 		],
 	},
 	{
@@ -186,6 +197,12 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 9, label: "하양" },
 			{ id: 10, label: "주황" },
 			{ id: 11, label: "그라데이션" },
+			{ id: 12, label: "청록" },
+			{ id: 13, label: "연보라" },
+			{ id: 14, label: "라임" },
+			{ id: 15, label: "코발트" },
+			{ id: 16, label: "투톤갈금" },
+			{ id: 17, label: "딥핑크" },
 		],
 	},
 	{
@@ -201,6 +218,10 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 5, label: "모노클" },
 			{ id: 6, label: "스포츠고글" },
 			{ id: 7, label: "VR헤드셋" },
+			{ id: 8, label: "하트안경" },
+			{ id: 9, label: "별모양안경" },
+			{ id: 10, label: "오버사이즈" },
+			{ id: 11, label: "팔각형" },
 		],
 	},
 	{
@@ -214,6 +235,10 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 3, label: "드롭형" },
 			{ id: 4, label: "크로스" },
 			{ id: 5, label: "별모양" },
+			{ id: 6, label: "하트" },
+			{ id: 7, label: "해골" },
+			{ id: 8, label: "깃털" },
+			{ id: 9, label: "뱀형" },
 		],
 	},
 	{
@@ -229,6 +254,11 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 5, label: "헤일로" },
 			{ id: 6, label: "고깔모자" },
 			{ id: 7, label: "헬멧" },
+			{ id: 8, label: "두건" },
+			{ id: 9, label: "탐정모자" },
+			{ id: 10, label: "화관" },
+			{ id: 11, label: "냥귀" },
+			{ id: 12, label: "하치마키" },
 		],
 	},
 	{
@@ -242,6 +272,9 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 3, label: "여우가면" },
 			{ id: 4, label: "방독면" },
 			{ id: 5, label: "복면" },
+			{ id: 6, label: "나비가면" },
+			{ id: 7, label: "해골마스크" },
+			{ id: 8, label: "의사마스크" },
 		],
 	},
 	{
@@ -261,6 +294,11 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 9, label: "셔츠" },
 			{ id: 10, label: "조끼" },
 			{ id: 11, label: "로브" },
+			{ id: 12, label: "기모노" },
+			{ id: 13, label: "우주복" },
+			{ id: 14, label: "닌자복" },
+			{ id: 15, label: "군복" },
+			{ id: 16, label: "마법사복" },
 		],
 	},
 	{
@@ -276,6 +314,63 @@ const AVATAR_CATEGORIES: readonly AvatarCategoryMeta[] = [
 			{ id: 5, label: "눈" },
 			{ id: 6, label: "하트" },
 			{ id: 7, label: "별" },
+			{ id: 8, label: "버블" },
+			{ id: 9, label: "음표" },
+			{ id: 10, label: "마법진" },
+			{ id: 11, label: "크리스탈" },
+			{ id: 12, label: "슬라임" },
+		],
+	},
+	{
+		key: "heldItem",
+		label: "들고 있는 아이템",
+		group: "의상",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "검" },
+			{ id: 2, label: "도끼" },
+			{ id: 3, label: "활" },
+			{ id: 4, label: "마법봉" },
+			{ id: 5, label: "총" },
+			{ id: 6, label: "방패" },
+			{ id: 7, label: "지팡이" },
+			{ id: 8, label: "횃불" },
+			{ id: 9, label: "쌍칼" },
+			{ id: 10, label: "망치" },
+			{ id: 11, label: "트라이던트" },
+			{ id: 12, label: "책" },
+			{ id: 13, label: "마이크" },
+			{ id: 14, label: "기타" },
+			{ id: 15, label: "낫" },
+			{ id: 16, label: "우산" },
+			{ id: 17, label: "폭탄" },
+		],
+	},
+	{
+		key: "blush",
+		label: "볼터치",
+		group: "얼굴 기본",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "분홍" },
+			{ id: 2, label: "파랑" },
+			{ id: 3, label: "주근깨" },
+			{ id: 4, label: "눈물" },
+			{ id: 5, label: "별빛" },
+		],
+	},
+	{
+		key: "pet",
+		label: "동반 펫",
+		group: "이펙트",
+		options: [
+			{ id: 0, label: "없음" },
+			{ id: 1, label: "고양이" },
+			{ id: 2, label: "강아지" },
+			{ id: 3, label: "새" },
+			{ id: 4, label: "드래곤" },
+			{ id: 5, label: "토끼" },
+			{ id: 6, label: "여우" },
 		],
 	},
 ] as const;
